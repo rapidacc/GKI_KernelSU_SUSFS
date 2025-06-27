@@ -29,7 +29,7 @@ on:
         required: true
         type: string
       kernelsu_branch_other:
-         required: false
+         required: true
          type: string
       revision:
         required: false
