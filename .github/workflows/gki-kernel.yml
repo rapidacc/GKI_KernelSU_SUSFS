@@ -231,11 +231,9 @@ jobs:
           
           if [ ! -z ${{ inputs.version }} ]; then
             echo "版本号不为空"
-            echo "CONFIG_NETFILTER_XT_MATCH_ADDRTYPE=y" >> "$CONFIG_FILE"
             sed -i '$s|echo "\$res"|echo "${{ inputs.version }}"|' ./common/scripts/setlocalversion
           else
             echo "版本号为空，使用默认值"
-            echo "CONFIG_NETFILTER_XT_MATCH_ADDRTYPE=y" >> "$CONFIG_FILE"
             sed -i '$s|echo "\$res"|echo "\$res-zakozakoooooo-1145141919"|' ./common/scripts/setlocalversion
           fi
 
@@ -263,6 +261,17 @@ jobs:
               sed -i '/^CONFIG_LOCALVERSION=/ s/="\([^"]*\)"/="${{ inputs.version }}"/' ./common/arch/arm64/configs/gki_defconfig
             fi
           fi
+          
+      - name: 添加自定义内核配置
+        run: |
+          echo "更改为配置目录: $CONFIG..."
+          cd "$CONFIG"
+
+          # 添加您需要的配置项
+          echo "CONFIG_NETFILTER_XT_MATCH_ADDRTYPE=y" >> ./common/arch/arm64/configs/gki_defconfig
+
+          # 移除 check_defconfig 以避免构建中断（GKI 构建常规操作）
+          sed -i 's/check_defconfig//' ./common/build.config.gki
 
       - name: Build with retry
         uses: nick-fields/retry@v3
