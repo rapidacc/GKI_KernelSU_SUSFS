@@ -269,7 +269,7 @@ jobs:
 
           # 添加您需要的配置项
           echo "CONFIG_NETFILTER_XT_MATCH_ADDRTYPE=y" >> ./common/arch/arm64/configs/gki_defconfig
-          echo "CONFIG_NETFILTER_XT_MATCH_CONNTRACK=y" >> ./common/arch/arm64/configs/gki_defconfig
+          echo "CONFIG_TMPFS_XATTR=y" >> ./common/arch/arm64/configs/gki_defconfig
 
           # 移除 check_defconfig 以避免构建中断（GKI 构建常规操作）
           sed -i 's/check_defconfig//' ./common/build.config.gki
